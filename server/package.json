@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Journal",
   "main": "server.js",
+    "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -21,7 +22,7 @@
   ],
   "author": "omprkash kumar",
   "license": "ISC",
-  "type": "commonjs",
+ 
   "dependencies": {
     "body-parser": "^2.2.2",
     "compression": "^1.8.1",
