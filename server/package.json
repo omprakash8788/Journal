@@ -1,13 +1,37 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Journal",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omprakash8788/Journal"
+  },
+  "keywords": [
+    "react",
+    "MERN",
+    "mongoose",
+    "express",
+    "node",
+    "omprakash8788"
+  ],
+  "author": "omprkash kumar",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-jwt": "^8.5.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "lodash": "^4.17.23",
+    "mongoose": "^9.2.4"
+  }
 }
