@@ -1,6 +1,6 @@
 import express from "express";
-import userCtrl from "../controllers/user.controller.js";
-import authCtrl from "../controllers/auth.controller";
+import userCtrl from "../contollers/user.controller.js";
+import authCtrl from "../contollers/auth.controller.js";
 
 const router = express.Router();
 
@@ -10,11 +10,10 @@ router
   .route("/api/users/:userId")
   .get(authCtrl.requireSignin, userCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
-  .delete(
+   .delete(
     authCtrl.requireSignin,
     authCtrl.hasAuthorization,
-    userCtrl,
-    userCtrl.remove,
+    userCtrl.remove
   );
 
 router.param("userId", userCtrl.userByID);
