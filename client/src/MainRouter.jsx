@@ -3,7 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./core/Home";
 import Users from "./user/Users";
 import Signup from "./user/Signup";
+import Signin from "./auth/Signin";
 
+//signin
 const MainRouter = () => {
   return (
     <div>
@@ -11,6 +13,8 @@ const MainRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users/>} />
         <Route path="/signup" element={<Signup/>} />
+        <Route path="/signin" element={<Signin/>} />
+
 
 
       </Routes>
