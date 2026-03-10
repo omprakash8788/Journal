@@ -10,6 +10,10 @@ export default () => {
     <body>
       <div>hello</div>
     </body>
+
+        <body>
+      <div>hello</div>
+    </body>
   </html>
   `;
 };
