@@ -7,11 +7,13 @@ import Signin from "./auth/Signin";
 import Profile from "./user/Profile";
 import PrivateRoute from "./auth/PrivateRoute";
 import EditProfile from "./user/EditProfile";
+import Menu from "./core/Menu";
 
 //signin
 const MainRouter = () => {
   return (
     <div>
+      <Menu />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />
