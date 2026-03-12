@@ -22,33 +22,27 @@ const Menu = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-
         <Typography variant="h6" color="inherit">
           MERN Skeleton
         </Typography>
-
         <Link to="/">
           <IconButton style={isActive("/")}>
             <HomeIcon />
           </IconButton>
         </Link>
-
         <Link to="/users">
           <Button style={isActive("/users")}>Users</Button>
         </Link>
-
         {!auth.isAuthenticated() && (
           <>
             <Link to="/signup">
               <Button style={isActive("/signup")}>Sign Up</Button>
             </Link>
-
             <Link to="/signin">
               <Button style={isActive("/signin")}>Sign In</Button>
             </Link>
           </>
         )}
-
         {auth.isAuthenticated() && (
           <>
             <Link to={`/user/${auth.isAuthenticated().user._id}`}>
@@ -56,7 +50,6 @@ const Menu = () => {
                 My Profile
               </Button>
             </Link>
-
             <Button
               color="inherit"
               onClick={() => {
@@ -67,7 +60,6 @@ const Menu = () => {
             </Button>
           </>
         )}
-
       </Toolbar>
     </AppBar>
   )
