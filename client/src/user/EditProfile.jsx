@@ -4,9 +4,18 @@ import { read, update } from "./api-user.js";
 import { Navigate, useParams } from "react-router-dom";
 import auth from "../auth/auth-helper";
 // import { makeStyles } from "@mui/styles";
-import { Button, Card, CardActions, CardContent, Icon, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Icon,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
+import { FileUpload } from "@mui/icons-material";
 
 // const useStyles = makeStyles((theme) => ({
 //   card: {
@@ -33,7 +42,6 @@ import { useTheme } from "@mui/material/styles";
 //     marginBottom: theme.spacing(2),
 //   },
 // }));
-
 
 const useStyles = makeStyles(() => {
   const theme = useTheme();
@@ -65,7 +73,6 @@ const useStyles = makeStyles(() => {
   };
 });
 
-
 export default function EditProfile() {
   const classes = useStyles();
   const { userId } = useParams();
@@ -75,10 +82,14 @@ export default function EditProfile() {
     name: "",
     password: "",
     email: "",
+    about: "",
+    photo: "",
     error: "",
     redirectToProfile: false,
     userId: "",
   });
+
+  console.log(values);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -100,13 +111,18 @@ export default function EditProfile() {
   }, [userId]);
 
   const clickSubmit = () => {
-    const user = {
-      name: values.name || undefined,
-      email: values.email || undefined,
-      password: values.password || undefined,
-    };
-
-    update({ userId: userId }, { t: jwt.token }, user).then((data) => {
+    let userData = new FormData();
+    values.name && userData.append("name", values.name);
+    values.email && userData.append("email", values.email);
+    values.password && userData.append("password", values.password);
+    values.about && userData.append("about", values.about);
+    values.photo && userData.append("photo", values.photo);
+    // const user = {
+    //   name: values.name || undefined,
+    //   email: values.email || undefined,
+    //   password: values.password || undefined,
+    // };
+    update({ userId: userId }, { t: jwt.token }, userData).then((data) => {
       if (data && data.error) {
         setValues((prev) => ({ ...prev, error: data.error }));
       } else {
@@ -120,7 +136,8 @@ export default function EditProfile() {
   };
 
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    setValues({ ...values, [name]: value });
   };
 
   if (values.redirectToProfile) {
@@ -142,6 +159,16 @@ export default function EditProfile() {
           margin="normal"
         />
         <br />
+        <TextField
+          id="multiline-flexible"
+          label="About"
+          multiline
+          rows="2"
+          value={values.about}
+          onChange={handleChange("about")}
+        />
+
+        <br />
 
         <TextField
           type="email"
@@ -161,6 +188,23 @@ export default function EditProfile() {
           onChange={handleChange("password")}
           margin="normal"
         />
+        <br />
+        <input
+          accept="image/*"
+          type="file"
+          onChange={handleChange("photo")}
+          style={{ display: "none" }}
+          id="icon-button-file"
+        />
+        <label htmlFor="icon-button-file">
+          <Button variant="contained" color="default" component="span">
+            Upload <FileUpload />
+          </Button>
+        </label>
+
+        <span className={classes.filename}>
+          {values.photo ? values.photo.name : ""}
+        </span>
 
         <br />
 

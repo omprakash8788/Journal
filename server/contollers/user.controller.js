@@ -3,6 +3,11 @@ import fs from "fs";
 import User from "../models/user.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./../helpers/dbErrorHandler.js";
+// import profileImage from '../../client/src/assets/user.png'
+
+const defaultPhoto = (req, res) => {
+  return res.sendFile(process.cwd() + "/server/assets/user.png");
+};
 
 const create = async (req, res) => {
   const user = new User(req.body);
@@ -60,16 +65,20 @@ const update = async (req, res) => {
   form.parse(req, async (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        error: "Photo could not be uploaded",
+        error: "Photo could not be uploaded" + err,
       });
     }
     let user = req.profile;
     user = extend(user, fields);
     user.updated = Date.now();
 
+    // if (files.photo) {
+    //   user.photo.data = fs.readFileSync(files.photo.path);
+    //   user.photo.contentType = files.photo.type;
+    // }
     if (files.photo) {
-      user.photo.data = fs.readFileSync(files.photo.path);
-      user.photo.contentType = files.photo.type;
+      user.photo.data = fs.readFileSync(files.photo.filepath);
+      user.photo.contentType = files.photo.mimetype;
     }
     try {
       await user.save();
@@ -84,6 +93,13 @@ const update = async (req, res) => {
   });
 };
 
+const photo = (req, res, next) => {
+  if (req.profile.photo.data) {
+    res.set("Content-Type", req.profile.photo.contentType);
+    return res.send(req.profile.photo.data);
+  }
+  next();
+};
 // const remove = async (req, res) => {
 //   try {
 //     let user = req.profile
@@ -122,4 +138,6 @@ export default {
   list,
   remove,
   update,
+  photo,
+  defaultPhoto,
 };

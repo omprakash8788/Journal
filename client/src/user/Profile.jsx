@@ -6,6 +6,8 @@ import { IconButton, ListItemSecondaryAction } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import DeleteUser from "./DeleteUser";
 
+const API = import.meta.env.VITE_API_URL;
+
 import { makeStyles } from "@mui/styles";
 import {
   Avatar,
@@ -37,12 +39,15 @@ const useStyles = makeStyles(() => ({
 const Profile = () => {
   const classes = useStyles();
   const { userId } = useParams();
+  const [values, setValues] = useState({});
+  console.log(values);
 
   const [user, setUser] = useState({});
+  console.log(user);
   const [redirectToSignin, setRedirectToSignin] = useState(false);
 
   const jwt = auth.isAuthenticated();
-  console.log(jwt)
+  console.log(jwt);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -67,6 +72,11 @@ const Profile = () => {
     return <Navigate to="/signin" />;
   }
 
+  const photoUrl = user?._id
+    ? `${API}/api/users/photo/${user?._id}?${new Date().getTime()}`
+    : `${API}/api/users/defaultphoto`;
+
+  console.log(photoUrl);
   return (
     <Paper className={classes.root} elevation={4}>
       <Typography variant="h6" className={classes.title}>
@@ -76,7 +86,7 @@ const Profile = () => {
       <List dense>
         <ListItem>
           <ListItemAvatar>
-            <Avatar>
+            <Avatar src={photoUrl}>
               <Person />
             </Avatar>
           </ListItemAvatar>
@@ -96,6 +106,10 @@ const Profile = () => {
         </ListItem>
 
         <Divider />
+
+        <ListItem>
+          <ListItemText primary={user?.about} />
+        </ListItem>
 
         <ListItem>
           <ListItemText
