@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+
   email: {
     type: String,
     trim: true,
@@ -20,6 +21,10 @@ const UserSchema = new mongoose.Schema({
   hashed_password: {
     type: String,
     required: "Password is required",
+  },
+  photo: {
+    data: Buffer,
+    contentType: String,
   },
   salt: String,
   updated: Date,
