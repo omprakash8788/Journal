@@ -136,6 +136,8 @@ const remove = async (req, res) => {
 };
 
 const addFollowing = async (req, res, next) => {
+   console.log("FOLLOW ROUTE HIT");
+  console.log(req.body);
   try {
     await User.findByIdAndUpdate(req.body.userId, {
       $push: { following: req.body.followId },
@@ -147,8 +149,10 @@ const addFollowing = async (req, res, next) => {
     });
   }
 };
-
+//addFollower
 const addFollower = async (req, res) => {
+   console.log("FOLLOW ROUTE HIT , i am addFollower");
+  console.log(req.body);
   try {
     let result = await User.findByIdAndUpdate(
       req.body.followId,
@@ -162,6 +166,7 @@ const addFollower = async (req, res) => {
     result.salt = undefined;
     res.json(result);
   } catch (err) {
+    console.log(err)
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err),
     });

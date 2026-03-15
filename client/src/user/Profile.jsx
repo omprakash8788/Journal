@@ -23,6 +23,7 @@ import { Person } from "@mui/icons-material";
 
 import { Navigate, useParams } from "react-router-dom";
 import FollowProfileButton from "./FollowProfileButton";
+import FollowGrid from "./FollowGrid";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -70,17 +71,17 @@ const useStyles = makeStyles(() => ({
   joined: {
     color: "#777",
     fontSize: 14,
-  }
+  },
 }));
 
 const Profile = () => {
   const classes = useStyles();
   const { userId } = useParams();
-   const [values, setValues] = useState({
-    user: {following:[], followers:[]},
+  const [values, setValues] = useState({
+    user: { following: [], followers: [] },
     redirectToSignin: false,
-    following: false
-  })
+    following: false,
+  });
   console.log(values);
 
   // const [user, setUser] = useState({});
@@ -98,24 +99,42 @@ const Profile = () => {
     return match;
   };
 
-  const clickFollowButton = (callApi) => {
-    callApi(
-      {
-        userId: jwt.user._id,
-      },
-      {
-        t: jwt.token,
-      },
-      values.user?._id,
-    ).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({ ...values, user: data, following: !values.following });
-      }
-    });
-  };
+  // const clickFollowButton = (callApi) => {
+  //   if (!values.user || !values.user._id) return;
+  //   callApi(
+  //     {
+  //       userId: jwt.user._id,
+  //     },
+  //     {
+  //       t: jwt.token,
+  //     },
+  //     values.user?._id,
+  //   ).then((data) => {
+  //     if (data.error) {
+  //       setValues({ ...values, error: data.error });
+  //     } else {
+  //       setValues({ ...values, user: data, following: !values.following });
+  //     }
+  //   });
+  // };
 
+  const clickFollowButton = (callApi) => {
+    if (!values.user || !values.user._id) return;
+
+    callApi({ userId: jwt.user._id }, { t: jwt.token }, values.user._id).then(
+      (data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          setValues((prev) => ({
+            ...prev,
+            user: data,
+            following: !prev.following,
+          }));
+        }
+      },
+    );
+  };
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -141,10 +160,13 @@ const Profile = () => {
     return <Navigate to="/signin" />;
   }
 
-  const photoUrl = values?._id
-    ? `${API}/api/users/photo/${values?._id}?${new Date().getTime()}`
-    : `${API}/api/users/defaultphoto`;
+  // const photoUrl = values.user?._id
+  //   ? `${API}/api/users/photo/${values?._id}?${new Date().getTime()}`
+  //   : `${API}/api/users/defaultphoto`;
 
+  const photoUrl = values.user?._id
+    ? `${API}/api/users/photo/${values.user._id}?${new Date().getTime()}`
+    : `${API}/api/users/defaultphoto`;
   console.log(photoUrl);
   return (
     <Paper className={classes.root} elevation={4}>
@@ -159,22 +181,28 @@ const Profile = () => {
               <Person />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={values.user?.name} secondary={values.user?.email} />
+          <ListItemText
+            primary={values.user?.name}
+            secondary={values.user?.email}
+          />
+             {jwt?.user && jwt?.user?._id === values.user?._id ? (
+          <ListItemSecondaryAction>
+            <Link to={"/user/edit/" + values.user._id}>
+              <IconButton aria-label="Edit" color="primary">
+                <Edit />
+              </IconButton>
+            </Link>
 
-          {jwt?.user && jwt?.user?._id === values.user?._id && (
-            <ListItemSecondaryAction>
-              <Link to={"/user/edit/" + values.user._id}>
-                <IconButton aria-label="Edit" color="primary">
-                  <Edit />
-                </IconButton>
-              </Link>
-
-              <DeleteUser userId={values.user._id} />
-            </ListItemSecondaryAction>
-          )}
+            <DeleteUser userId={values.user._id} />
+          </ListItemSecondaryAction>
+        ) : (
+          <FollowProfileButton
+            following={values.following}
+            onButtonClick={clickFollowButton}
+          />
+        )}
+        
         </ListItem>
-        <Divider />
-         <FollowProfileButton  following={values.following} onButtonClick={clickFollowButton}/>
         <Divider />
 
         <ListItem>
@@ -191,6 +219,8 @@ const Profile = () => {
           />
         </ListItem>
       </List>
+      <FollowGrid people={values?.user?.followers} />
+      <FollowGrid people={values?.user?.following} />
     </Paper>
   );
 };
