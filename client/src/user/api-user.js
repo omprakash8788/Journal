@@ -61,7 +61,6 @@ const read = async (params, credentials, signal) => {
 //   }
 // };
 
-
 const update = async (params, credentials, user) => {
   try {
     let response = await fetch(`${API}/api/users/` + params.userId, {
@@ -71,6 +70,23 @@ const update = async (params, credentials, user) => {
         Authorization: "Bearer " + credentials.t,
       },
       body: user,
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const follow = async (params, credentials, followId) => {
+  try {
+    let response = await fetch(`${API}/api/users/follow/`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+      body: JSON.stringify({ userId: params.userId, followId: followId }),
     });
     return await response.json();
   } catch (err) {
@@ -93,4 +109,21 @@ const remove = async (params, credentials) => {
   }
 };
 
-export { create, list, read, update, remove };
+const unfollow = async (params, credentials, unfollowId) => {
+  try {
+    let response = await fetch(`${API}/api/users/unfollow/`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+      body: JSON.stringify({ userId: params.userId, unfollowId: unfollowId }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { create, list, read, update, remove, follow, unfollow };
