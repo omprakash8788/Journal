@@ -1,13 +1,3 @@
-// import React from 'react'
-
-// const Post = () => {
-//   return (
-//     <div>Post</div>
-//   )
-// }
-
-// export default Post
-
 import React, { useState } from "react";
 import auth from "./../auth/auth-helper";
 
@@ -17,7 +7,8 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@emotion/react";
 import PropTypes from "prop-types";
-import { Card, CardContent, Divider, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, Divider, IconButton, Typography } from "@mui/material";
+import { Comment, CommentSharp, FavoriteBorder } from "@mui/icons-material";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -58,42 +49,42 @@ const useStyles = makeStyles(() => {
 export default function Post(props) {
   const classes = useStyles();
   const jwt = auth.isAuthenticated();
-//   const checkLike = (likes) => {
-//     let match = likes.indexOf(jwt.user._id) !== -1;
-//     return match;
-//   };
+  const checkLike = (likes) => {
+    let match = likes.indexOf(jwt.user._id) !== -1;
+    return match;
+  };
   const [values, setValues] = useState({
-    // like: checkLike(props.post.likes),
-    // likes: props.post.likes.length,
-    // comments: props.post.comments,
+    like: checkLike(props.post.likes),
+    likes: props.post.likes.length,
+    comments: props.post.comments,
   });
 
   // useEffect(() => {
   //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
   // }, [])
 
-//   const clickLike = () => {
-//     let callApi = values.like ? unlike : like;
-//     callApi(
-//       {
-//         userId: jwt.user._id,
-//       },
-//       {
-//         t: jwt.token,
-//       },
-//       props.post._id,
-//     ).then((data) => {
-//       if (data.error) {
-//         console.log(data.error);
-//       } else {
-//         setValues({ ...values, like: !values.like, likes: data.likes.length });
-//       }
-//     });
-//   };
+  const clickLike = () => {
+    let callApi = values.like ? unlike : like;
+    callApi(
+      {
+        userId: jwt.user._id,
+      },
+      {
+        t: jwt.token,
+      },
+      props.post._id,
+    ).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setValues({ ...values, like: !values.like, likes: data.likes.length });
+      }
+    });
+  };
 
-//   const updateComments = (comments) => {
-//     setValues({ ...values, comments: comments });
-//   };
+  const updateComments = (comments) => {
+    setValues({ ...values, comments: comments });
+  };
 
 //   const deletePost = () => {
 //     remove(
@@ -144,7 +135,7 @@ export default function Post(props) {
           </div>
         )}
       </CardContent>
-      {/* <CardActions>
+      <CardActions>
         {values.like ? (
           <IconButton
             onClick={clickLike}
@@ -161,7 +152,7 @@ export default function Post(props) {
             aria-label="Unlike"
             color="secondary"
           >
-            <FavoriteBorderIcon />
+            <FavoriteBorder/>
           </IconButton>
         )}{" "}
         <span>{values.likes}</span>
@@ -170,10 +161,10 @@ export default function Post(props) {
           aria-label="Comment"
           color="secondary"
         >
-          <CommentIcon />
+          <CommentSharp/>
         </IconButton>{" "}
         <span>{values.comments.length}</span>
-      </CardActions> */}
+      </CardActions>
       <Divider/>
       {/* <Comments
         postId={props.post._id}
