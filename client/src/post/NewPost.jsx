@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from "react";
 import auth from "./../auth/auth-helper";
 import PropTypes from "prop-types";

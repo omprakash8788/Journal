@@ -1,7 +1,7 @@
 import formidable from "formidable";
 import Post from "../models/post.model.js";
 import fs from "fs";
-import errorHandler  from "../helpers/dbErrorHandler.js";
+import errorHandler from "../helpers/dbErrorHandler.js";
 
 const listNewsFeed = async (req, res) => {
   let following = req.profile.following;
@@ -188,5 +188,5 @@ export default {
   like,
   unlike,
   comment,
-  uncomment
+  uncomment,
 };

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-// import {comment, uncomment} from './api-post.js'
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { Avatar, CardHeader, Icon, TextField, useTheme } from "@mui/material";
@@ -72,19 +71,24 @@ export default function Comments(props) {
     }
   };
 
-    const deleteComment = comment => event => {
-      uncomment({
-        userId: jwt.user._id
-      }, {
-        t: jwt.token
-      }, props.postId, comment).then((data) => {
-        if (data.error) {
-          console.log(data.error)
-        } else {
-          props.updateComments(data.comments)
-        }
-      })
-    }
+  const deleteComment = (comment) => (event) => {
+    uncomment(
+      {
+        userId: jwt.user._id,
+      },
+      {
+        t: jwt.token,
+      },
+      props.postId,
+      comment,
+    ).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        props.updateComments(data.comments);
+      }
+    });
+  };
 
   const commentBody = (item) => {
     return (
@@ -93,10 +97,16 @@ export default function Comments(props) {
         <br />
         {item.text}
         <span className={classes.commentDate}>
-            {(new Date(item.created)).toDateString()} |
-            {auth.isAuthenticated().user._id === item.postedBy._id &&
-              <Delete onClick={deleteComment(item)} className={classes.commentDelete}>delete</Delete> }
-          </span>
+          {new Date(item.created).toDateString()} |
+          {auth.isAuthenticated().user._id === item.postedBy._id && (
+            <Delete
+              onClick={deleteComment(item)}
+              className={classes.commentDelete}
+            >
+              delete
+            </Delete>
+          )}
+        </span>
       </p>
     );
   };
