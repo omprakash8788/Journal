@@ -68,7 +68,7 @@ const like = async (params, credentials, postId) => {
 
 const unlike = async (params, credentials, postId) => {
   try {
-    let response = await fetch("/api/posts/unlike/", {
+    let response = await fetch(`${API}/api/posts/unlike/`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
