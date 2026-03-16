@@ -3,9 +3,7 @@ import app from "./express.js";
 import mongoose from "mongoose";
 
 mongoose.Promise = global.Promise;
-
 mongoose.connect(config.mongoUri);
-
 mongoose.connection.on("connected", () => {
   console.log("MongoDB connected successfully");
 });

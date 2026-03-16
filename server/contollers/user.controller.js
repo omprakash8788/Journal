@@ -3,7 +3,6 @@ import fs from "fs";
 import User from "../models/user.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./../helpers/dbErrorHandler.js";
-// import profileImage from '../../client/src/assets/user.png'
 
 const defaultPhoto = (req, res) => {
   return res.sendFile(process.cwd() + "/server/assets/user.png");
@@ -104,19 +103,6 @@ const photo = (req, res, next) => {
   }
   next();
 };
-// const remove = async (req, res) => {
-//   try {
-//     let user = req.profile
-//     let deletedUser = await user.remove()
-//     deletedUser.hashed_password = undefined
-//     deletedUser.salt = undefined
-//     res.json(deletedUser)
-//   } catch (err) {
-//     return res.status(400).json({
-//       error: errorHandler.getErrorMessage(err)
-//     })
-//   }
-// }
 
 const remove = async (req, res) => {
   try {
@@ -136,8 +122,6 @@ const remove = async (req, res) => {
 };
 
 const addFollowing = async (req, res, next) => {
-  console.log("FOLLOW ROUTE HIT");
-  console.log(req.body);
   try {
     await User.findByIdAndUpdate(req.body.userId, {
       $push: { following: req.body.followId },
@@ -151,8 +135,6 @@ const addFollowing = async (req, res, next) => {
 };
 //addFollower
 const addFollower = async (req, res) => {
-  console.log("FOLLOW ROUTE HIT , i am addFollower");
-  console.log(req.body);
   try {
     let result = await User.findByIdAndUpdate(
       req.body.followId,

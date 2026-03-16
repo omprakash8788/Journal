@@ -67,21 +67,6 @@ const Signin = () => {
       email: values.email,
       password: values.password,
     };
-
-    // signin(user).then((data) => {
-    //   if (data?.error) {
-    //     setValues({ ...values, error: data.error });
-    //   } else {
-    //     auth.authenticate(data, () => {
-    //       setValues({
-    //         ...values,
-    //         error: "",
-    //         redirectToReferrer: true,
-    //       });
-    //     });
-    //   }
-    // });
-
     signin(user).then((data) => {
   if (!data || data.error) {
     setValues({ ...values, error: data?.error || "Login failed" });
