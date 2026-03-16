@@ -86,16 +86,16 @@ const postByID = async (req, res, next, id) => {
 };
 
 const remove = async (req, res) => {
-  let post = req.post
-  try{
-    let deletedPost = await post.remove()
-    res.json(deletedPost)
-  }catch(err){
+  let post = req.post;
+  try {
+    let deletedPost = await post.remove();
+    res.json(deletedPost);
+  } catch (err) {
     return res.status(400).json({
-      error: errorHandler.getErrorMessage(err)
-    })
+      error: errorHandler.getErrorMessage(err),
+    });
   }
-}
+};
 
 const isPoster = (req, res, next) => {
   let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
@@ -107,4 +107,28 @@ const isPoster = (req, res, next) => {
   next();
 };
 
-export default { listNewsFeed, isPoster, remove, listByUser, create, photo, postByID };
+const like = async (req, res) => {
+  try {
+    let result = await Post.findByIdAndUpdate(
+      req.body.postId,
+      { $push: { likes: req.body.userId } },
+      { new: true },
+    );
+    res.json(result);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+export default {
+  listNewsFeed,
+  isPoster,
+  remove,
+  listByUser,
+  create,
+  photo,
+  postByID,
+  like
+};
