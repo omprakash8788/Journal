@@ -24,6 +24,8 @@ import { Person } from "@mui/icons-material";
 import { Navigate, useParams } from "react-router-dom";
 import FollowProfileButton from "./FollowProfileButton";
 import FollowGrid from "./FollowGrid";
+import FindPeople from "./FindPeople";
+import { listByUser } from "../post/api-post";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -77,6 +79,7 @@ const useStyles = makeStyles(() => ({
 const Profile = () => {
   const classes = useStyles();
   const { userId } = useParams();
+  const [posts, setPosts] = useState([]);
   const [values, setValues] = useState({
     user: { following: [], followers: [] },
     redirectToSignin: false,
@@ -135,6 +138,25 @@ const Profile = () => {
       },
     );
   };
+
+   const loadPosts = (user) => {
+    listByUser(
+      {
+        userId: user,
+      },
+      {
+        t: jwt.token,
+      },
+    ).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setPosts(data);
+      }
+    });
+  };
+
+
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -148,6 +170,7 @@ const Profile = () => {
         // setUser(data);
         let following = checkFollow(data);
         setValues({ ...values, user: data, following: following });
+        loadPosts(data._id)
       }
     });
 
@@ -156,13 +179,11 @@ const Profile = () => {
     };
   }, [userId]);
 
+ 
+
   if (redirectToSignin) {
     return <Navigate to="/signin" />;
   }
-
-  // const photoUrl = values.user?._id
-  //   ? `${API}/api/users/photo/${values?._id}?${new Date().getTime()}`
-  //   : `${API}/api/users/defaultphoto`;
 
   const photoUrl = values.user?._id
     ? `${API}/api/users/photo/${values.user._id}?${new Date().getTime()}`
@@ -185,23 +206,22 @@ const Profile = () => {
             primary={values.user?.name}
             secondary={values.user?.email}
           />
-             {jwt?.user && jwt?.user?._id === values.user?._id ? (
-          <ListItemSecondaryAction>
-            <Link to={"/user/edit/" + values.user._id}>
-              <IconButton aria-label="Edit" color="primary">
-                <Edit />
-              </IconButton>
-            </Link>
+          {jwt?.user && jwt?.user?._id === values.user?._id ? (
+            <ListItemSecondaryAction>
+              <Link to={"/user/edit/" + values.user._id}>
+                <IconButton aria-label="Edit" color="primary">
+                  <Edit />
+                </IconButton>
+              </Link>
 
-            <DeleteUser userId={values.user._id} />
-          </ListItemSecondaryAction>
-        ) : (
-          <FollowProfileButton
-            following={values.following}
-            onButtonClick={clickFollowButton}
-          />
-        )}
-        
+              <DeleteUser userId={values.user._id} />
+            </ListItemSecondaryAction>
+          ) : (
+            <FollowProfileButton
+              following={values.following}
+              onButtonClick={clickFollowButton}
+            />
+          )}
         </ListItem>
         <Divider />
 
@@ -221,6 +241,8 @@ const Profile = () => {
       </List>
       <FollowGrid people={values?.user?.followers} />
       <FollowGrid people={values?.user?.following} />
+      <FindPeople />
+       {/* <ProfileTabs user={values.user} posts={posts} removePostUpdate={removePost}/> */}
     </Paper>
   );
 };
