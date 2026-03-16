@@ -1,6 +1,7 @@
 import formidable from "formidable";
 import Post from "../models/post.model.js";
 import fs from "fs";
+import errorHandler  from "../helpers/dbErrorHandler.js";
 
 const listNewsFeed = async (req, res) => {
   let following = req.profile.following;
@@ -86,9 +87,10 @@ const postByID = async (req, res, next, id) => {
 };
 
 const remove = async (req, res) => {
-  let post = req.post;
   try {
-    let deletedPost = await post.remove();
+    let post = req.post;
+    let deletedPost = await post.deleteOne();
+
     res.json(deletedPost);
   } catch (err) {
     return res.status(400).json({

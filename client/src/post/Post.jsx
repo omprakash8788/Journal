@@ -9,8 +9,7 @@ import { useTheme } from "@emotion/react";
 import PropTypes from "prop-types";
 import { Avatar, Card, CardActions, CardContent, CardHeader, Divider, IconButton, Typography } from "@mui/material";
 import { Comment, CommentSharp, Delete, Favorite, FavoriteBorder } from "@mui/icons-material";
-import { remove } from "../user/api-user";
-import { like, unlike } from "./api-post";
+import { like, remove, unlike } from "./api-post";
 import Comments from "./Comments";
 
 const API = import.meta.env.VITE_API_URL;
@@ -62,11 +61,6 @@ export default function Post(props) {
     likes: props.post.likes.length,
     comments: props.post.comments,
   });
-
-  // useEffect(() => {
-  //   setValues({...values, like:checkLike(props.post.likes), likes: props.post.likes.length, comments: props.post.comments})
-  // }, [])
-
   const clickLike = () => {
     let callApi = values?.like ? unlike : like;
     callApi(
@@ -93,7 +87,7 @@ export default function Post(props) {
   const deletePost = () => {
     remove(
       {
-        postId: props.post._id,
+        postId: props?.post?._id,
       },
       {
         t: jwt.token,
