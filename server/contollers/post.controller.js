@@ -137,6 +137,26 @@ const unlike = async (req, res) => {
   }
 };
 
+const comment = async (req, res) => {
+  let comment = req.body.comment;
+  comment.postedBy = req.body.userId;
+  try {
+    let result = await Post.findByIdAndUpdate(
+      req.body.postId,
+      { $push: { comments: comment } },
+      { new: true },
+    )
+      .populate("comments.postedBy", "_id name")
+      .populate("postedBy", "_id name")
+      .exec();
+    res.json(result);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
 export default {
   listNewsFeed,
   isPoster,
@@ -146,5 +166,6 @@ export default {
   photo,
   postByID,
   like,
-  unlike
+  unlike,
+  comment
 };
