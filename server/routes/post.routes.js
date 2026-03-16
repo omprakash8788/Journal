@@ -5,6 +5,8 @@ import postCtrl from "../contollers/post.controller.js";
 
 const router = express.Router();
 
+router.route("/api/posts/like").put(authCtrl.requireSignin, postCtrl.like);
+
 router
   .route("/api/posts/feed/:userId")
   .get(authCtrl.requireSignin, postCtrl.listNewsFeed);
