@@ -8,8 +8,9 @@ import { makeStyles } from "@mui/styles";
 import { useTheme } from "@emotion/react";
 import PropTypes from "prop-types";
 import { Avatar, Card, CardActions, CardContent, CardHeader, Divider, IconButton, Typography } from "@mui/material";
-import { Comment, CommentSharp, Delete, FavoriteBorder } from "@mui/icons-material";
+import { Comment, CommentSharp, Delete, Favorite, FavoriteBorder } from "@mui/icons-material";
 import { remove } from "../user/api-user";
+import { like, unlike } from "./api-post";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -50,6 +51,7 @@ const useStyles = makeStyles(() => {
 export default function Post(props) {
   const classes = useStyles();
   const jwt = auth.isAuthenticated();
+
   const checkLike = (likes) => {
     let match = likes.indexOf(jwt.user._id) !== -1;
     return match;
@@ -65,7 +67,7 @@ export default function Post(props) {
   // }, [])
 
   const clickLike = () => {
-    let callApi = values.like ? unlike : like;
+    let callApi = values?.like ? unlike : like;
     callApi(
       {
         userId: jwt.user._id,
@@ -73,9 +75,9 @@ export default function Post(props) {
       {
         t: jwt.token,
       },
-      props.post._id,
+      props?.post?._id,
     ).then((data) => {
-      if (data.error) {
+      if (data?.error) {
         console.log(data.error);
       } else {
         setValues({ ...values, like: !values.like, likes: data.likes.length });
@@ -144,7 +146,7 @@ export default function Post(props) {
             aria-label="Like"
             color="secondary"
           >
-            <FavoriteIcon />
+            <Favorite/>
           </IconButton>
         ) : (
           <IconButton
