@@ -1,6 +1,7 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import unicornbikeImg from "../assets/bike.avif";
+import Newsfeed from "../post/Newsfeed";
 
 const Home = () => {
   return (
@@ -21,6 +22,10 @@ const Home = () => {
           Welcome to the MERN Skeleton home page.
         </Typography>
       </CardContent>
+
+      <Grid item xs={8} sm={7}>
+        <Newsfeed />
+      </Grid>
     </Card>
   );
 };

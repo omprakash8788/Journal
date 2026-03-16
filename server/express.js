@@ -8,6 +8,7 @@ import template from "../template.js";
 
 import userRoutes from './routes/user.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import postRoutes from './routes/post.routes.js'
 
 const app = express();
 app.use(bodyParser.json());
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
 // mount routes
 app.use('/', userRoutes)
 app.use('/', authRoutes)
+app.use('/', postRoutes)
 
 // Catch unauthorised errors
 app.use((err, req, res, next) => {

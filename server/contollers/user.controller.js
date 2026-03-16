@@ -32,16 +32,16 @@ const userByID = async (req, res, next, id) => {
       .populate("following", "_id name")
       .populate("followers", "_id name")
       .exec();
-
     if (!user)
       return res.status(400).json({
         error: "User not found",
       });
     req.profile = user;
+
     next();
   } catch (err) {
     return res.status(400).json({
-      error: "Could not retrieve user",
+      error: "Could not retrieve user" + err,
     });
   }
 };
@@ -136,7 +136,7 @@ const remove = async (req, res) => {
 };
 
 const addFollowing = async (req, res, next) => {
-   console.log("FOLLOW ROUTE HIT");
+  console.log("FOLLOW ROUTE HIT");
   console.log(req.body);
   try {
     await User.findByIdAndUpdate(req.body.userId, {
@@ -151,7 +151,7 @@ const addFollowing = async (req, res, next) => {
 };
 //addFollower
 const addFollower = async (req, res) => {
-   console.log("FOLLOW ROUTE HIT , i am addFollower");
+  console.log("FOLLOW ROUTE HIT , i am addFollower");
   console.log(req.body);
   try {
     let result = await User.findByIdAndUpdate(
@@ -166,7 +166,7 @@ const addFollower = async (req, res) => {
     result.salt = undefined;
     res.json(result);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err),
     });
@@ -205,6 +205,19 @@ const removeFollower = async (req, res) => {
   }
 };
 
+const findPeople = async (req, res) => {
+  let following = req.profile.following;
+  following.push(req.profile._id);
+  try {
+    let users = await User.find({ _id: { $nin: following } }).select("name");
+    res.json(users);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
 export default {
   create,
   userByID,
@@ -217,6 +230,6 @@ export default {
   addFollowing,
   addFollower,
   removeFollowing,
-  removeFollower
+  removeFollower,
+  findPeople
 };
-
