@@ -19,7 +19,6 @@ const DeleteUser = ({ userId }) => {
 
   const deleteAccount = () => {
     const jwt = auth.isAuthenticated();
-
     remove(
       { userId: userId },
       { t: jwt.token }

@@ -125,4 +125,22 @@ const uncomment = async (params, credentials, postId, comment) => {
   }
 };
 
-export { listNewsFeed, listByUser, create, like, unlike, comment, uncomment };
+//This one 
+const remove = async (params, credentials) => {
+  try {
+    let response = await fetch(`${API}/api/posts/` + params.postId, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }
+    })
+    console.log(response)
+    return await response.json()
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+export { listNewsFeed, remove, listByUser, create, like, unlike, comment, uncomment };

@@ -101,26 +101,6 @@ const Profile = () => {
     });
     return match;
   };
-
-  // const clickFollowButton = (callApi) => {
-  //   if (!values.user || !values.user._id) return;
-  //   callApi(
-  //     {
-  //       userId: jwt.user._id,
-  //     },
-  //     {
-  //       t: jwt.token,
-  //     },
-  //     values.user?._id,
-  //   ).then((data) => {
-  //     if (data.error) {
-  //       setValues({ ...values, error: data.error });
-  //     } else {
-  //       setValues({ ...values, user: data, following: !values.following });
-  //     }
-  //   });
-  // };
-
   const clickFollowButton = (callApi) => {
     if (!values.user || !values.user._id) return;
 
@@ -214,7 +194,8 @@ const Profile = () => {
                 </IconButton>
               </Link>
 
-              <DeleteUser userId={values.user._id} />
+              {/* <DeleteUser userId={values.user._id} /> */}
+              {values.user?._id && <DeleteUser userId={values.user._id} />}
             </ListItemSecondaryAction>
           ) : (
             <FollowProfileButton
