@@ -7,8 +7,9 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@emotion/react";
 import PropTypes from "prop-types";
-import { Card, CardActions, CardContent, Divider, IconButton, Typography } from "@mui/material";
-import { Comment, CommentSharp, FavoriteBorder } from "@mui/icons-material";
+import { Avatar, Card, CardActions, CardContent, CardHeader, Divider, IconButton, Typography } from "@mui/material";
+import { Comment, CommentSharp, Delete, FavoriteBorder } from "@mui/icons-material";
+import { remove } from "../user/api-user";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -86,31 +87,31 @@ export default function Post(props) {
     setValues({ ...values, comments: comments });
   };
 
-//   const deletePost = () => {
-//     remove(
-//       {
-//         postId: props.post._id,
-//       },
-//       {
-//         t: jwt.token,
-//       },
-//     ).then((data) => {
-//       if (data.error) {
-//         console.log(data.error);
-//       } else {
-//         props.onRemove(props.post);
-//       }
-//     });
-//   };
+  const deletePost = () => {
+    remove(
+      {
+        postId: props.post._id,
+      },
+      {
+        t: jwt.token,
+      },
+    ).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        props.onRemove(props.post);
+      }
+    });
+  };
 
   return (
     <Card className={classes.card}>
-      {/* <CardHeader
+      <CardHeader
         avatar={<Avatar src={"/api/users/photo/" + props.post.postedBy._id} />}
         action={
           props.post.postedBy._id === auth.isAuthenticated().user._id && (
             <IconButton onClick={deletePost}>
-              <DeleteIcon />
+              <Delete />
             </IconButton>
           )
         }
@@ -121,7 +122,7 @@ export default function Post(props) {
         }
         subheader={new Date(props.post.created).toDateString()}
         className={classes.cardHeader}
-      /> */}
+      />
       <CardContent className={classes.cardContent}>
         <Typography component="p" className={classes.text}>
           {props?.post?.text}
