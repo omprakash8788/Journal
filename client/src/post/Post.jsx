@@ -11,6 +11,7 @@ import { Avatar, Card, CardActions, CardContent, CardHeader, Divider, IconButton
 import { Comment, CommentSharp, Delete, Favorite, FavoriteBorder } from "@mui/icons-material";
 import { remove } from "../user/api-user";
 import { like, unlike } from "./api-post";
+import Comments from "./Comments";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -169,11 +170,11 @@ export default function Post(props) {
         <span>{values.comments.length}</span>
       </CardActions>
       <Divider/>
-      {/* <Comments
+      <Comments
         postId={props.post._id}
         comments={values.comments}
         updateComments={updateComments}
-      /> */}
+      />
     </Card>
   );
 }
