@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 // import {comment, uncomment} from './api-post.js'
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import { Avatar, CardHeader, TextField, useTheme } from "@mui/material";
+import { Avatar, CardHeader, Icon, TextField, useTheme } from "@mui/material";
 import auth from "../auth/auth-helper";
-import { comment } from "./api-post";
+import { comment, uncomment } from "./api-post";
+import { Delete } from "@mui/icons-material";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -71,19 +72,19 @@ export default function Comments(props) {
     }
   };
 
-  //   const deleteComment = comment => event => {
-  //     uncomment({
-  //       userId: jwt.user._id
-  //     }, {
-  //       t: jwt.token
-  //     }, props.postId, comment).then((data) => {
-  //       if (data.error) {
-  //         console.log(data.error)
-  //       } else {
-  //         props.updateComments(data.comments)
-  //       }
-  //     })
-  //   }
+    const deleteComment = comment => event => {
+      uncomment({
+        userId: jwt.user._id
+      }, {
+        t: jwt.token
+      }, props.postId, comment).then((data) => {
+        if (data.error) {
+          console.log(data.error)
+        } else {
+          props.updateComments(data.comments)
+        }
+      })
+    }
 
   const commentBody = (item) => {
     return (
@@ -91,11 +92,11 @@ export default function Comments(props) {
         <Link to={"/user/" + item.postedBy._id}>{item.postedBy.name}</Link>
         <br />
         {item.text}
-        {/* <span className={classes.commentDate}>
+        <span className={classes.commentDate}>
             {(new Date(item.created)).toDateString()} |
             {auth.isAuthenticated().user._id === item.postedBy._id &&
-              <Icon onClick={deleteComment(item)} className={classes.commentDelete}>delete</Icon> }
-          </span> */}
+              <Delete onClick={deleteComment(item)} className={classes.commentDelete}>delete</Delete> }
+          </span>
       </p>
     );
   };
