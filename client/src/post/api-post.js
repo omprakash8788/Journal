@@ -13,7 +13,11 @@ const listNewsFeed = async (params, credentials, signal) => {
     });
     return await response.json();
   } catch (err) {
-    console.log(err);
+    if (err.name === "AbortError") {
+      console.log("Fetch aborted");
+    } else {
+      console.log(err);
+    }
   }
 };
 
@@ -125,22 +129,31 @@ const uncomment = async (params, credentials, postId, comment) => {
   }
 };
 
-//This one 
+//This one
 const remove = async (params, credentials) => {
   try {
     let response = await fetch(`${API}/api/posts/` + params.postId, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + credentials.t
-      }
-    })
-    console.log(response)
-    return await response.json()
-  } catch(err) {
-    console.log(err)
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+    });
+    console.log(response);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
   }
-}
+};
 
-export { listNewsFeed, remove, listByUser, create, like, unlike, comment, uncomment };
+export {
+  listNewsFeed,
+  remove,
+  listByUser,
+  create,
+  like,
+  unlike,
+  comment,
+  uncomment,
+};

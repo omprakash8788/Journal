@@ -23,7 +23,7 @@ const Menu = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" color="inherit">
-          MERN Skeleton
+          Journel
         </Typography>
         <Link to="/">
           <IconButton style={isActive("/")}>

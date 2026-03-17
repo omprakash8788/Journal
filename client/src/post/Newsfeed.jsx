@@ -23,17 +23,17 @@ const Newsfeed = () => {
     setPosts(updatedPosts);
   };
 
-  const jwt = auth.isAuthenticated();
+  const jwt = auth?.isAuthenticated();
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
     listNewsFeed(
       {
-        userId: jwt.user._id,
+        userId: jwt?.user?._id,
       },
       {
-        t: jwt.token,
+        t: jwt?.token,
       },
       signal,
     ).then((data) => {

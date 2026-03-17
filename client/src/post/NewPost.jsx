@@ -103,15 +103,15 @@ function NewPost(props) {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     setValues({ ...values, [name]: value });
   };
-  const photoURL = values.user._id
-    ? `${API}/api/users/photo/` + values.user._id
+  const photoURL = values?.user?._id
+    ? `${API}/api/users/photo/` + values?.user?._id
     : `${API}/api/users/defaultphoto`;
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
         <CardHeader
           avatar={<Avatar src={photoURL} />}
-          title={values.user.name}
+          title={values?.user?.name}
           className={classes.cardHeader}
         />
         <CardContent className={classes.cardContent}>
@@ -119,7 +119,7 @@ function NewPost(props) {
             placeholder="Share your thoughts ..."
             multiline
             rows="3"
-            value={values.text}
+            value={values?.text}
             onChange={handleChange("text")}
             className={classes.textField}
             margin="normal"
@@ -141,14 +141,14 @@ function NewPost(props) {
             </IconButton>
           </label>{" "}
           <span className={classes.filename}>
-            {values.photo ? values.photo.name : ""}
+            {values?.photo ? values?.photo?.name : ""}
           </span>
-          {values.error && (
+          {values?.error && (
             <Typography component="p" color="error">
               <Icon color="error" className={classes.error}>
                 error
               </Icon>
-              {values.error}
+              {values?.error}
             </Typography>
           )}
         </CardContent>
@@ -156,7 +156,7 @@ function NewPost(props) {
           <Button
             color="primary"
             variant="contained"
-            disabled={values.text === ""}
+            disabled={values?.text === ""}
             onClick={clickPost}
             className={classes.submit}
           >
