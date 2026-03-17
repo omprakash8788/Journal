@@ -7,15 +7,30 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@emotion/react";
 import PropTypes from "prop-types";
-import { Avatar, Card, CardActions, CardContent, CardHeader, Divider, IconButton, Typography } from "@mui/material";
-import { Comment, CommentSharp, Delete, Favorite, FavoriteBorder } from "@mui/icons-material";
+import {
+  Avatar,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import {
+  Comment,
+  CommentSharp,
+  Delete,
+  Favorite,
+  FavoriteBorder,
+} from "@mui/icons-material";
 import { like, remove, unlike } from "./api-post";
 import Comments from "./Comments";
 
 const API = import.meta.env.VITE_API_URL;
 
 const useStyles = makeStyles(() => {
-    const theme = useTheme()
+  const theme = useTheme();
   return {
     card: {
       maxWidth: 600,
@@ -141,7 +156,7 @@ export default function Post(props) {
             aria-label="Like"
             color="secondary"
           >
-            <Favorite/>
+            <Favorite />
           </IconButton>
         ) : (
           <IconButton
@@ -150,7 +165,7 @@ export default function Post(props) {
             aria-label="Unlike"
             color="secondary"
           >
-            <FavoriteBorder/>
+            <FavoriteBorder />
           </IconButton>
         )}{" "}
         <span>{values.likes}</span>
@@ -159,11 +174,11 @@ export default function Post(props) {
           aria-label="Comment"
           color="secondary"
         >
-          <CommentSharp/>
+          <CommentSharp />
         </IconButton>{" "}
         <span>{values.comments.length}</span>
       </CardActions>
-      <Divider/>
+      <Divider />
       <Comments
         postId={props.post._id}
         comments={values.comments}
