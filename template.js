@@ -13,9 +13,7 @@ export default () => {
       <div>hello</div>
     </body>
 
-        <body>
-      <div>hello</div>
-    </body>
+  
 
        </body>
 
